@@ -1,0 +1,48 @@
+/* ============================================================
+   MOOD: HIGH-ENERGY — bold, cinematic, confident.
+   Deep ink, vivid accent, punchy motion, glint + momentum.
+   ============================================================ */
+:root{
+  --bg: #0b0d12;                  /* deep ink           */
+  --bg-soft: #141821;
+  --surface: #10141c;
+  --surface-2: #1a202c;
+  --border: rgba(255,255,255,.10);
+  --border-strong: rgba(255,255,255,.20);
+  --text-1: #f4f6fb;              /* near-white         */
+  --text-2: #c3c9d6;
+  --text-3: #7b8292;
+  --accent: #ff5c2e;              /* vivid flame        */
+  --accent-2: #ffb62e;            /* gold glint         */
+  --accent-3: #2ee6ff;            /* cyan pop           */
+  --grad: linear-gradient(135deg, #ff5c2e, #ffb62e 55%, #2ee6ff);
+  --grad-soft: linear-gradient(135deg, #1a1c24, #241a18 55%, #0f2330);
+  --font-serif: 'Playfair Display','Noto Serif SC',Georgia,serif;
+  --font-sans: 'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  --font-display: var(--font-sans);
+
+  /* timing — punchy & kinetic */
+  --t-out: 520ms;
+  --t-in: 620ms;
+  --t-hold: 200ms;
+  --ease-out: cubic-bezier(.5, 0, .16, 1);
+  --ease-in: cubic-bezier(.18, 1, .24, 1);
+  --ambient-dur: 9s;
+
+  /* larger, bolder type */
+  --verse-size: clamp(42px, 6vw, 76px);
+  --note-size: clamp(30px, 3.8vw, 48px);
+}
+.player{ background: var(--bg); }
+.player::before{ content:""; position:absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(110% 90% at 85% -15%, rgba(255,92,46,.28), transparent 55%),
+    radial-gradient(120% 90% at 0% 115%, rgba(46,230,255,.14), transparent 55%);
+}
+.slide { justify-content:flex-start; align-items:flex-start; text-align:left; }
+.slide .verse{ font-weight: 700; font-style: normal; }
+.slide .verse::before{ content:""; display:block; width:64px; height:4px; margin-bottom:22px;
+  background: var(--grad); border-radius:2px; }
+.slide .ref{ letter-spacing:.1em; }
+.slide .note{ font-weight: 400; }
+.brand{ color:#7b8292; }

@@ -1,0 +1,45 @@
+/* ============================================================
+   MOOD: CALM — contemplative & reverent for sermon content.
+   Soft warm light, low contrast, slow breath, gentle motion.
+   ============================================================ */
+:root{
+  --bg: #f6f1e8;                 /* warm paper         */
+  --bg-soft: #efe8da;
+  --surface: #fbf7ee;
+  --surface-2: #ede4d0;
+  --border: rgba(90,70,40,.10);
+  --border-strong: rgba(90,70,40,.20);
+  --text-1: #2f2a22;             /* warm ink           */
+  --text-2: #5f574a;
+  --text-3: #9a8f7c;
+  --accent: #9a7b4f;             /* muted brass        */
+  --accent-2: #7a9a8b;           /* sage               */
+  --accent-3: #b08968;           /* clay               */
+  --grad: linear-gradient(135deg, #9a7b4f, #7a9a8b 60%, #b08968);
+  --grad-soft: linear-gradient(135deg, #f7f0df, #eef3ec 60%, #f6ece0);
+  --font-serif: 'Georgia','Noto Serif SC',serif;
+  --font-sans: 'Inter','Noto Sans SC',-apple-system,Helvetica,Arial,sans-serif;
+  --font-display: var(--font-serif);
+
+  /* timing — slow & breathy */
+  --t-out: 900ms;
+  --t-in: 1000ms;
+  --t-hold: 400ms;
+  --ease-out: cubic-bezier(.45, 0, .3, 1);
+  --ease-in: cubic-bezier(.2, .6, .2, 1);
+  --ambient-dur: 16s;
+
+  /* softer verse scale for sermons */
+  --verse-size: clamp(38px, 5.2vw, 66px);
+  --note-size: clamp(28px, 3.4vw, 42px);
+}
+.player{ background: var(--bg); }
+.player::before{ content:""; position:absolute; inset:0; z-index:0;
+  background:
+    radial-gradient(120% 90% at 80% -10%, rgba(255,255,255,.9), transparent 60%),
+    radial-gradient(120% 90% at 10% 110%, rgba(158,150,120,.18), transparent 55%);
+}
+.slide .verse{ font-style: italic; }
+.slide { justify-content:flex-start; align-items:center; text-align:center; }
+.slide .ref{ font-weight: 500; letter-spacing:.16em; }
+.brand{ color:#9a8f7c; }

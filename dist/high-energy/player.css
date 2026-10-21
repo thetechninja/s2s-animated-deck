@@ -1,0 +1,149 @@
+/* ============================================================================
+   sermon2slides :: animated deck player
+   Custom slide framework + whoosh transitions for the animated sermon deck.
+   Reuses the html-ppt (MIT) base.css tokens + animations.css entry vocabulary;
+   this file owns the deck chrome, slide lifecycle, and the exit choreography.
+
+   Design contract
+   ---------------
+   The deck is a set of `.slide` layers in a fixed 16:9 viewport. At most one
+   slide is `.is-active`. On navigation:
+      1. the outgoing slide gets `.is-exit-<dir>` => plays a WHOOSH OUT,
+      2. after the exit duration the active class swaps,
+      3. the incoming slide plays its `data-anim` entry + optional data-fx.
+   All durations/easing are exposed as CSS variables driven by a mood layer
+   (see moods/*.css), so the same player renders "calm", "high-energy", etc.
+
+   Focus is global and is controlled per-mood via --focus-accent.
+   ============================================================================ */
+
+:root {
+  /* timing/easing knob (moods override) */
+  --t-out: 620ms;          /* whoosh-out duration   */
+  --t-in: 680ms;           /* entry reveal duration  */
+  --t-hold: 0ms;            /* min hold before exit allowed */
+  --ease-out: cubic-bezier(.5, 0, .12, 1);   /* fast-out */
+  --ease-in: cubic-bezier(.16, 1, .3, 1);     /* slow-in  */
+
+  /* ambient live motion on the active slide (0 disables) */
+  --ambient-dur: 12s;
+  --ambient-opacity: 1;
+
+  /* per-role typography scale (moods may tune) */
+  --verse-size: clamp(34px, 4.4vw, 58px);
+  --ref-size: clamp(20px, 2vw, 26px);
+  --note-size: clamp(26px, 3vw, 40px);
+  --def-term-color: var(--accent);
+}
+
+/* ---------- viewport & slide shell ---------- */
+.player {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+.slide {
+  position: absolute;
+  inset: 0;
+  padding: clamp(40px, 7vw, 96px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateX(4vw);
+  visibility: hidden;
+  transition: opacity var(--t-in) var(--ease-in), transform var(--t-in) var(--ease-in), visibility .2s;
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+.slide.is-active {
+  opacity: var(--ambient-opacity);
+  transform: none;
+  visibility: visible;
+  z-index: 2;
+  animation: none;
+}
+
+/* ---------- WHOOSH OUT (exit choir) ---------- */
+/* The outgoing slide is the element that currently holds .is-exit-*  */
+.slide.is-exit-left  { animation: whoosh-left  var(--t-out) var(--ease-out) forwards; }
+.slide.is-exit-right { animation: whoosh-right var(--t-out) var(--ease-out) forwards; }
+
+@keyframes whoosh-left {
+  0%   { opacity: var(--ambient-opacity); transform: none; }
+  18%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(-110vw) rotate(-1.5deg); }
+}
+@keyframes whoosh-right {
+  0%   { opacity: var(--ambient-opacity); transform: none; }
+  18%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(110vw) rotate(1.5deg); }
+}
+
+/* ---------- ambient hold ("flutter a bit") on the active slide ---------- */
+.slide.is-active[data-ambient="kenburns"] {
+  animation: kb-ambient var(--ambient-dur) ease-in-out infinite alternate;
+}
+@keyframes kb-ambient {
+  from { transform: scale(1); }
+  to   { transform: scale(1.045); }
+}
+
+/* ---------- progress bar & brand chrome ---------- */
+.progress-bar { position: fixed; inset: 0 auto 0 0; top: 0; bottom: 0; left: 0;
+  width: 4px; background: transparent; z-index: 20; pointer-events: none; }
+.progress-bar > span { display: block; height: 100%; width: 100%;
+  background: var(--accent); transform: scaleY(0); transform-origin: top;
+  transition: transform .3s ease; }
+.brand { position: fixed; bottom: 22px; right: 30px; z-index: 20; pointer-events: none;
+  font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
+.brand strong { color: var(--accent); }
+
+/* ---------- semantic slide typography -------------------------------- */
+.slide .eyebrow { margin-bottom: 14px; }
+.slide .verse {
+  font-family: var(--font-serif);
+  font-size: var(--verse-size);
+  line-height: 1.28;
+  font-weight: 500;
+  color: var(--text-1);
+  max-width: 24ch;
+  margin: 0 0 26px;
+  position: relative;
+}
+.slide .ref {
+  font-family: var(--font-sans);
+  font-size: var(--ref-size);
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.slide .note {
+  font-family: var(--font-sans);
+  font-size: var(--note-size);
+  line-height: 1.5;
+  color: var(--text-2);
+  font-weight: 300;
+  max-width: 30ch;
+}
+.slide .note .def-term { color: var(--def-term-color); font-weight: 600; }
+.slide .note .def { color: var(--text-3); font-style: italic; }
+
+/* layout: verse-left w/ ref, note sits below */
+.stack-verse { display: flex; flex-direction: column; }
+.stack-verse .verse { margin-bottom: 14px; }
+.stack-verse .ref { align-self: flex-start; }
+
+/* definition term highlight */
+.term-chip { display: inline-block; color: var(--def-term-color); font-weight: 700;
+  border-bottom: 2px solid var(--def-term-color); padding-bottom: 2px; }
+
+/* ---------- reduced motion safety (do not break the html-ppt contract) - */
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-exit-left, .slide.is-exit-right { animation-duration: 1ms; animation: none; }
+  .slide.is-active[data-ambient] { animation: none; }
+}

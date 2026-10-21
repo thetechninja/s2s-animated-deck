@@ -1,0 +1,43 @@
+/* ============================================================
+   MOOD: EDITORIAL — high-design magazine serif / swiss.
+   Near-white, honest type, hairline rules, precise motion.
+   ============================================================ */
+:root{
+  --bg: #fbfbf9;                  /* near-white paper   */
+  --bg-soft: #f2f1ec;
+  --surface: #ffffff;
+  --surface-2: #eeeeea;
+  --border: rgba(20,20,20,.10);
+  --border-strong: rgba(20,20,20,.20);
+  --text-1: #141414;              /* true ink           */
+  --text-2: #3d3d3d;
+  --text-3: #8a8a86;
+  --accent: #c22f0e;              /* vermilion accent   */
+  --accent-2: #0e63c2;            /* cobalt             */
+  --accent-3: #7d5a00;            /* mustard            */
+  --grad: linear-gradient(135deg, #c22f0e, #0e63c2 60%, #7d5a00);
+  --grad-soft: linear-gradient(135deg, #f7f4f1, #eef2f7 55%, #f5f1e8);
+  --font-serif: 'Playfair Display','Noto Serif SC',Georgia,serif;
+  --font-sans: 'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  --font-display: var(--font-serif);
+
+  /* timing — precise & confident */
+  --t-out: 540ms;
+  --t-in: 600ms;
+  --t-hold: 200ms;
+  --ease-out: cubic-bezier(.6, 0, .12, 1);
+  --ease-in: cubic-bezier(.2, 1, .3, 1);
+  --ambient-dur: 0s;              /* editorial holds still (no kenburns) */
+
+  /* magazine-scale serif verse */
+  --verse-size: clamp(40px, 6.2vw, 80px);
+  --note-size: clamp(24px, 2.6vw, 34px);
+  --ref-size: clamp(14px, 1.4vw, 18px);
+}
+.player{ background: var(--bg); }
+.slide { justify-content:center; align-items:flex-start; text-align:left; }
+.slide .eyebrow{ border-bottom:1px solid var(--border-strong); padding-bottom:10px; }
+.slide .verse{ font-weight: 600; font-style: normal; }
+.slide .ref{ color: var(--accent); }
+.slide .note{ font-weight: 400; max-width: 34ch; }
+.brand{ color:#8a8a86; letter-spacing:.2em; }

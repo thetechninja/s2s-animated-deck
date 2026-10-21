@@ -1,0 +1,10 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Generated artifacts (rebuild via src/generate.py)
+dist/shots/
+
+# OS
+.DS_Store
